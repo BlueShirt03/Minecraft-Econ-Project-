@@ -19,10 +19,18 @@ def get_connection():
         user = DB_USER,
         password = DB_PASSWORD,
         port = DB_PORT
-
     )
-    except ValueError as e:
+    except psycopg2.Error as e:
         print(f"Error connecting to database: {e}")
         return None
     return connection
     
+
+connection = get_connection()
+
+if connection:
+    print ("Database connection successful!")
+else:
+    print ("Database connection failed.")  
+
+print(connection)
