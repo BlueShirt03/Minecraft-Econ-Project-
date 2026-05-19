@@ -1,8 +1,0 @@
-CREATE TABLE players(
-    id SERIAL PRIMARY KEY,
-    discord_id BIGINT UNIQUE NOT NULL, 
-    minecraft_username VARCHAR(50) UNIQUE NOT NULL,
-    balance NUMERIC(10, 2) DEFAULT 0, 
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, 
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
