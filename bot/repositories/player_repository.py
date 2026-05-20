@@ -1,4 +1,4 @@
-from bot.connection import get_connection
+from bot.database.connection import get_connection
 
 class PlayerRepository:
     def create_player(self, discord_id, minecraft_username):
@@ -41,5 +41,4 @@ if __name__ == "__main__":
          print("Player created successfully")
      else:
          print("Player was not able to be created")
-    
     
