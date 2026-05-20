@@ -27,7 +27,21 @@ class PlayerRepository:
         finally:
             cursor.close()
             connection.close()
+    
+    def delete_player(self, discord_id, minecraft_username):
+        connection = get_connection()
 
+        if connection is None:
+            print("Could not connect to database.")
+
+        try:
+            cursor = connection.cursor()
+
+            cursor.execute(
+                """DELETE FROM player
+                WHERE player = discord_id, 
+                """
+            )
 
 if __name__ == "__main__":
      player_repository = PlayerRepository()
