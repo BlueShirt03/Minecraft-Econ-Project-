@@ -9,12 +9,12 @@ class PlayerRepository:
             return False
         
         try:
-            cursour = connection.cursor()
+            cursor = connection.cursor()
 
-            cursour.execute(
+            cursor.execute(
                 """ INSERT INTO player (discord_id, minecraft_username)
                 VALUES (%s, %s);
-                """
+                """,
                 (discord_id, minecraft_username)
             )
 
@@ -25,14 +25,14 @@ class PlayerRepository:
             return False
         
         finally:
-            cursour.close()
+            cursor.close()
             connection.close()
 
 
 if __name__ == "__main__":
-     play_repostiory = PlayerRepository()
+     player_repository = PlayerRepository()
 
-     success = play_repostiory.create_player(
+     success = player_repository.create_player(
          discord_id = 123456789, 
          minecraft_username = "PotatoLover25"
      )
