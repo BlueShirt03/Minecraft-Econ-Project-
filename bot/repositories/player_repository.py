@@ -63,19 +63,21 @@ class PlayerRepository:
         try:
             cursor = connection.cursor()
 
-            query = """SELECT * FROM player
+            cursor.execute(
+                """SELECT * FROM player
                     WHERE discord_id = %s;
-                    """
+                    """, (discord_id,)
+            )
             
-            cursor.execute(query, (discord_id,))
-
-            if query is None:
-                print("Could not find player")
-                return False
-            
-            found_player = cursor.fetchone()  
             connection.commit()
+            found_player = cursor.fetchone()
+
+            if found_player is None:
+                print("Could not find player")
+                return False  
+            
             return found_player
+        
         except Exception as e:
             print(f"Error finding discord_id: {e}")
             return False
@@ -103,7 +105,7 @@ if __name__ == "__main__":
         minecraft_username = "YoMama67"
     )"""
 
-    find_id = player_repository.get_player_by_discord_id(87876)
+    find_id = player_repository.get_player_by_discord_id(8)
     print(find_id)
 
     
