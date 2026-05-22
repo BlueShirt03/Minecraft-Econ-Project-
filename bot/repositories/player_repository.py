@@ -73,7 +73,7 @@ class PlayerRepository:
             found_player = cursor.fetchone()
 
             if found_player is None:
-                print("Could not find player")
+                print("Could not find discord id")
                 return False  
             
             return found_player
@@ -85,6 +85,38 @@ class PlayerRepository:
         finally:
             cursor.close()
             connection.close()
+
+    def get_player_by_username(self, minecraft_username):
+        connection = get_connection()
+
+        if connection is None:
+            print("Could not connect to database")
+            return False
+        try:
+            cursor = connection.cursor()
+
+            cursor.execute(
+                """SELECT * FROM player
+                WHERE minecraft_username = %s;""",
+                (minecraft_username,)
+                        
+            )
+            connection.commit()
+            found_player = cursor.fetchone()
+
+            if found_player is None:
+                print("Could not find username")
+                return False
+            
+            return found_player
+        except Exception as e:
+            print(f"Error finding username: {e}")
+        
+        finally:
+            connection.close()
+            cursor.close()
+        
+         
 
     
 if __name__ == "__main__":
@@ -105,8 +137,8 @@ if __name__ == "__main__":
         minecraft_username = "YoMama67"
     )"""
 
-    find_id = player_repository.get_player_by_discord_id(8)
-    print(find_id)
+    find_username = player_repository.get_player_by_username("YoMama67")
+    print(find_username)
 
     
  
