@@ -33,6 +33,7 @@ class PlayerRepository:
 
         if connection is None:
             print("Could not connect to database.")
+            return False
 
         try:
             cursor = connection.cursor()
@@ -40,7 +41,7 @@ class PlayerRepository:
             cursor.execute(
                """Delete from player
                WHERE minecraft_username = %s
-               """, (minecraft_username)
+               """, (minecraft_username,)
             )
             connection.commit()
             return True
@@ -53,22 +54,23 @@ class PlayerRepository:
             connection.close()
     
 if __name__ == "__main__":
-     player_repository = PlayerRepository()
+    player_repository = PlayerRepository()
 
-     success1 = player_repository.create_player(
-         discord_id = 123456789, 
-         minecraft_username = "PotatoLover25"
-     )
+    success1 = player_repository.create_player(
+        discord_id = 123456789, 
+        minecraft_username = "PotatoLover25"
+    )
 
-     success2 = player_repository.create_player(
-         discord_id = 8374873, 
-         minecraft_username = "BlockMaster29"
-     )
+    success2 = player_repository.create_player(
+        discord_id = 8374873, 
+        minecraft_username = "BlockMaster29"
+    )
 
-     success3 = player_repository.create_player(
-         discord_id = 17683640, 
-         minecraft_username = "YoMama67"
-     )
-     print(success1)   
-     print(success2)   
-     print(success3)   
+    success3 = player_repository.create_player(
+        discord_id = 17683640, 
+        minecraft_username = "YoMama67"
+    )
+
+    del_player = player_repository.delete_player(minecraft_username="YoMama67")
+    print(del_player)
+ 
