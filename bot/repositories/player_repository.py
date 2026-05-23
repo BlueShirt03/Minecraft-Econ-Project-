@@ -1,6 +1,7 @@
 from bot.database.connection import get_connection
 
 class PlayerRepository:
+
     def create_player(self, discord_id, minecraft_username):
         connection = get_connection()
 
@@ -149,8 +150,24 @@ class PlayerRepository:
         finally:
             connection.close()
             cursor.close()
-        
-        
+
+    
+    def update_balance(self,mincraft_username,balance):
+        connection = get_connection()
+
+        if connection is None:
+            print("Could not connect to database")
+            return False 
+            
+        try:
+
+            cursor = connection.cursor()
+
+            cursor.execute()
+
+        except Exception as e:
+            print(f"Error updating balance: {e}")
+            return False        
         
         
          
@@ -177,8 +194,9 @@ if __name__ == "__main__":
     #find_username = player_repository.get_player_by_username("YoMama67")
     #print(find_username)
 
-    find_balance = player_repository.get_balance("BlockDude")
-    print(find_balance)
+    #find_balance = player_repository.get_balance("BlockDude")
+   #print(find_balance)
 
+    find_balance1 = player_repository.get_balance("YoMama67")
+    print(find_balance1)
     
- 
