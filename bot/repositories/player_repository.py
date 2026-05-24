@@ -152,7 +152,7 @@ class PlayerRepository:
             cursor.close()
 
     
-    def update_balance(self,mincraft_username,balance):
+    def update_balance(self, balance, minecraft_username):
         connection = get_connection()
 
         if connection is None:
@@ -163,11 +163,29 @@ class PlayerRepository:
 
             cursor = connection.cursor()
 
-            cursor.execute()
+            cursor.execute(
+                """UPDATE player
+                SET balance = %s
+                WHERE minecraft_username = %s;""",
+                (balance, minecraft_username,)
+            )
+
+            connection.commit()
+            new_balance = cursor.fetchone()
+            
+            if new_balance is None:
+                print("Could not update balance")
+                return False
+            
+            return True
 
         except Exception as e:
             print(f"Error updating balance: {e}")
-            return False        
+            return False
+
+        finally:
+            connection.close()
+            cursor.close()  
         
         
          
@@ -197,6 +215,7 @@ if __name__ == "__main__":
     #find_balance = player_repository.get_balance("BlockDude")
    #print(find_balance)
 
-    find_balance1 = player_repository.get_balance("YoMama67")
-    print(find_balance1)
+    new_balance = player_repository.update_balance(30.00, 'YoMama67')
+    print(new_balance)
+
     
