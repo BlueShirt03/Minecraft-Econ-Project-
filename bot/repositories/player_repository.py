@@ -187,6 +187,36 @@ class PlayerRepository:
         finally:
             connection.close()
             cursor.close()  
+
+
+    def player_exist(self, minecraft_username):
+        connection = get_connection()
+
+        if connection is None:
+            print("Could not connect to database.")
+            return False
+        
+        try:
+            cursor = connection.cursor()
+
+            cursor.execute(
+                """SELECT minecraft_username from player 
+                Where minecraft_username = %s""",
+                (minecraft_username,)
+            )
+
+            connection.commit()
+            find_player = cursor.fetchone()
+
+            if find_player is None:
+                return False
+                
+            return True
+            
+        except Exception as e:
+            print(f"Error finding player: {e}")
+            return False
+            
         
         
          
@@ -216,7 +246,10 @@ if __name__ == "__main__":
     #find_balance = player_repository.get_balance("BlockDude")
    #print(find_balance)
 
-    new_balance = player_repository.update_balance(37.00, 'YoMama67')
-    print(new_balance)
+    #new_balance = player_repository.update_balance(37.00, 'Yo')
+    #print(new_balance)
+
+    find_player = player_repository.player_exist("YoMama67")
+    print(find_player)
 
     
