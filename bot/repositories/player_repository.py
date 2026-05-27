@@ -166,7 +166,8 @@ class PlayerRepository:
             cursor.execute(
                 """UPDATE player
                 SET balance = %s
-                WHERE minecraft_username = %s;""",
+                WHERE minecraft_username = %s
+                RETURNING balance;;""",
                 (balance, minecraft_username,)
             )
 
@@ -177,7 +178,7 @@ class PlayerRepository:
                 print("Could not update balance")
                 return False
             
-            return True
+            return new_balance
 
         except Exception as e:
             print(f"Error updating balance: {e}")
@@ -215,7 +216,7 @@ if __name__ == "__main__":
     #find_balance = player_repository.get_balance("BlockDude")
    #print(find_balance)
 
-    new_balance = player_repository.update_balance(30.00, 'YoMama67')
+    new_balance = player_repository.update_balance(37.00, 'YoMama67')
     print(new_balance)
 
     
