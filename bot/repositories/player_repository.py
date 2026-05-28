@@ -237,7 +237,7 @@ class PlayerRepository:
                 """,(amount, sender_name,)
             )
 
-            if cursor.rowcount == 0:
+            if cursor.rowcount > 0:
                 connection.rollback()
                 return False
            
@@ -291,12 +291,13 @@ if __name__ == "__main__":
     #find_balance = player_repository.get_balance("BlockDude")
    #print(find_balance)
 
-    #new_balance = player_repository.update_balance(100.00, 'BlockMaster29')
+    #new_balance = player_repository.update_balance(0, 'PotatoLover25')
     #print(new_balance)
 
     #find_player = player_repository.player_exist("YoMama67")
     #print(find_player)
 
-    transfer_balance = player_repository.transfer_money(5.00, "BlockMaster29", "YoMama67")
+    transfer_balance = player_repository.transfer_money(5.00, "PotatoLover25", "YoMama67")
+    print(transfer_balance)
 
     
