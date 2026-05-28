@@ -167,7 +167,7 @@ class PlayerRepository:
                 """UPDATE player
                 SET balance = %s
                 WHERE minecraft_username = %s
-                RETURNING balance;;""",
+                RETURNING balance;""",
                 (balance, minecraft_username,)
             )
 
@@ -219,7 +219,52 @@ class PlayerRepository:
             
         
         
-         
+    def transfer_money(self, amount, sender_name, receive_name ):
+        connection = get_connection()
+
+        if connection is None:
+            print("Could not connect to databse.")
+            return False
+
+        try:
+            cursor = connection.cursor()
+
+            cursor.execute(
+                """
+                update player 
+                set balance = balance - %s 
+                where minecraft_username = %s;
+                """,(amount, sender_name,)
+            )
+
+            if cursor.rowcount == 0:
+                connection.rollback()
+                return False
+           
+
+            cursor.execute(
+                """
+                update player
+                set balance = balance + %s
+                where minecraft_username = %s;""", 
+                (amount, receive_name,)
+            
+            )
+
+            if cursor.rowcount == 0:
+                connection.rollback()
+                return False
+            
+            connection.commit()
+            return True
+        except Exception as e:
+            connection.rollback()
+            print(f"Error transfering money: {e}")
+            return False
+        
+        finally:
+            connection.close()
+            cursor.close()
 
     
 if __name__ == "__main__":
@@ -246,10 +291,12 @@ if __name__ == "__main__":
     #find_balance = player_repository.get_balance("BlockDude")
    #print(find_balance)
 
-    #new_balance = player_repository.update_balance(37.00, 'Yo')
+    #new_balance = player_repository.update_balance(100.00, 'BlockMaster29')
     #print(new_balance)
 
-    find_player = player_repository.player_exist("YoMama67")
-    print(find_player)
+    #find_player = player_repository.player_exist("YoMama67")
+    #print(find_player)
+
+    transfer_balance = player_repository.transfer_money(5.00, "BlockMaster29", "YoMama67")
 
     
